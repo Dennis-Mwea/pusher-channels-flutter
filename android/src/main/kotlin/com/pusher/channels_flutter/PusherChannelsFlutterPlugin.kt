@@ -1,5 +1,6 @@
 package com.pusher.channels_flutter
 
+import android.app.Activity
 import com.google.gson.Gson
 import com.pusher.client.ChannelAuthorizer
 import com.pusher.client.Pusher
@@ -10,7 +11,6 @@ import com.pusher.client.connection.ConnectionState
 import com.pusher.client.connection.ConnectionStateChange
 import com.pusher.client.util.HttpChannelAuthorizer
 import io.flutter.Log
-import android.app.Activity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -102,6 +102,9 @@ class PusherChannelsFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAw
             }
             val options = PusherOptions()
             if (call.argument<String>("cluster") != null) options.setCluster(call.argument("cluster"))
+            if (call.argument<String>("host") != null) options.setHost(call.argument("host"))
+            if (call.argument<String>("wsPort") != null) options.setWsPort(call.argument<Int>("wsPort")!!)
+            if (call.argument<String>("wssPort") != null) options.setWssPort(call.argument<Int>("wssPort")!!)
             if (call.argument<Boolean>("useTLS") != null) options.isUseTLS =
                 call.argument("useTLS")!!
             if (call.argument<Long>("activityTimeout") != null) options.activityTimeout =
@@ -220,7 +223,7 @@ class PusherChannelsFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAw
                 "onEvent", mapOf(
                     "channelName" to channelName,
                     "eventName" to "pusher:subscription_succeeded",
-                    "data" to emptyMap<String,String>()
+                    "data" to emptyMap<String, String>()
                 )
             )
         }
