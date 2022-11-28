@@ -89,6 +89,9 @@ class PusherChannelsFlutter {
   Future<void> init({
     required String apiKey,
     required String cluster,
+    String? host,
+    int? wsPort,
+    int? wssPort,
     bool? useTLS,
     int? activityTimeout,
     int? pongTimeout,
@@ -129,6 +132,9 @@ class PusherChannelsFlutter {
     this.onSubscriptionCount = onSubscriptionCount;
     await methodChannel.invokeMethod('init', {
       "apiKey": apiKey,
+      "host": host,
+      "wsPort": wsPort,
+      "wssPort": wssPort,
       "cluster": cluster,
       "useTLS": useTLS,
       "activityTimeout": activityTimeout,
