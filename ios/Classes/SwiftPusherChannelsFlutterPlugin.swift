@@ -45,10 +45,10 @@ public class SwiftPusherChannelsFlutterPlugin: NSObject, FlutterPlugin, PusherDe
     } else if args["authorizer"] is Bool {
       authMethod = .authorizer(authorizer: self)
     }
-    var host: PusherHost = .defaultHost
+    var host: PusherHost
     if args["host"] is String {
       host = .host(args["host"] as! String)
-    } else if args["cluster"] != nil {
+    } else {
       host = .cluster(args["cluster"] as! String)
     }
     var useTLS: Bool = true
@@ -71,15 +71,11 @@ public class SwiftPusherChannelsFlutterPlugin: NSObject, FlutterPlugin, PusherDe
     if args["activityTimeout"] is TimeInterval {
       activityTimeout = args["activityTimeout"] as! Double / 1000.0
     }
-    var path: String?
-    if args["path"] is String {
-      path = (args["path"] as! String)
-    }
+
     let options = PusherClientOptions(
       authMethod: authMethod,
       host: host,
       port: port,
-      path: path,
       useTLS: useTLS,
       activityTimeout: activityTimeout
     )
@@ -225,8 +221,7 @@ public class SwiftPusherChannelsFlutterPlugin: NSObject, FlutterPlugin, PusherDe
           ]
         )
       }
-      pusher.subscribe(channelName: channelName,
-                       onSubscriptionCountChanged: onSubscriptionCount)
+      pusher.subscribe(channelName: channelName)
     }
     result(nil)
   }
